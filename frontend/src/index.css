@@ -1,0 +1,88 @@
+/* ✅ Set light background and ensure full-page centering */
+body {
+  background-color: #f8f9fa;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+/* ✅ Ensures the container (card) is centered */
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+
+/* ✅ Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+/* ✅ Pagination Styling */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px; /* ✅ Increased spacing between numbers */
+  padding: 10px;
+  border-top: 2px solid #ddd; /* ✅ Adds line above pagination */
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.pagination .page-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+  transition: background-color 0.3s, transform 0.2s ease-in-out, color 0.3s;
+  font-weight: bold;
+  text-align: center;
+  user-select: none;
+  font-size: 1.1rem;
+}
+
+.pagination .page-item:hover {
+  background-color: #e9ecef;
+  transform: scale(1.1);
+  cursor: pointer; /* ✅ Pointer cursor on hover */
+}
+
+.pagination .page-item.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #0056b3;
+}
+
+.pagination .page-item:active {
+  transform: scale(0.95);
+}
