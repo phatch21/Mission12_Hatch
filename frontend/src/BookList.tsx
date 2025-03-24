@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Form, Container, Row, Col } from "react-bootstrap";
+import {
+  Table,
+  Form,
+  Container,
+  Row,
+  Col,
+  Button,
+  Badge,
+} from "react-bootstrap";
+import { useCart } from "./CartContext";
+import { useNavigate } from "react-router-dom";
 
 interface Book {
   bookID: number;
@@ -20,6 +30,10 @@ const BookList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+
+  const { cart, addToCart } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -35,27 +49,57 @@ const BookList = () => {
       });
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, booksPerPage]);
+
   const handleSortByTitle = () => {
-    const sortedBooks = [...books].sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a.title.localeCompare(b.title);
-      } else {
-        return b.title.localeCompare(a.title);
-      }
-    });
+    const sortedBooks = [...books].sort((a, b) =>
+      sortOrder === "asc"
+        ? a.title.localeCompare(b.title)
+        : b.title.localeCompare(a.title)
+    );
 
     setBooks(sortedBooks);
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
+  const categories = Array.from(new Set(books.map((b) => b.classification)));
+
+  const filteredBooks =
+    selectedCategory === "All"
+      ? books
+      : books.filter((b) => b.classification === selectedCategory);
+
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
-  const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
-  const totalPages = Math.ceil(books.length / booksPerPage);
+  const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
+  const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const totalCost = cart
+    .reduce((sum, item) => sum + item.quantity * item.price, 0)
+    .toFixed(2);
 
   return (
     <Container className="mt-4">
       <h2 className="text-center mb-4">Book List</h2>
+
+      {/* 🛒 Cart Summary + View Cart Button */}
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <h5 className="m-0">
+            Cart:{" "}
+            <Badge bg="secondary">
+              {totalItems} item{totalItems !== 1 ? "s" : ""}
+            </Badge>{" "}
+            | Total: <strong>${totalCost}</strong>
+          </h5>
+        </div>
+        <Button variant="outline-primary" onClick={() => navigate("/cart")}>
+          View Cart
+        </Button>
+      </div>
 
       {loading && <p className="text-center">Loading books...</p>}
       {error && <p className="text-center text-danger">{error}</p>}
@@ -63,6 +107,19 @@ const BookList = () => {
       {!loading && !error && (
         <>
           <Row className="justify-content-center mb-3">
+            <Col xs="auto">
+              <Form.Select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value="All">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </Form.Select>
+            </Col>
             <Col xs="auto">
               <Form.Select
                 value={booksPerPage}
@@ -87,6 +144,7 @@ const BookList = () => {
                 <th>Classification</th>
                 <th>Pages</th>
                 <th>Price ($)</th>
+                <th>Add to Cart</th>
               </tr>
             </thead>
             <tbody>
@@ -99,12 +157,28 @@ const BookList = () => {
                   <td>{book.classification}</td>
                   <td>{book.pageCount}</td>
                   <td>{book.price.toFixed(2)}</td>
+                  <td>
+                    <Button
+                      size="sm"
+                      variant="primary"
+                      onClick={() =>
+                        addToCart({
+                          bookID: book.bookID,
+                          title: book.title,
+                          price: book.price,
+                          quantity: 1,
+                        })
+                      }
+                    >
+                      Add
+                    </Button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </Table>
 
-          {/* Pagination UI */}
+          {/* Pagination */}
           <div className="pagination-container">
             <div className="pagination">
               {Array.from({ length: totalPages }, (_, i) => (

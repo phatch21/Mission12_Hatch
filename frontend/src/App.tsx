@@ -1,11 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BookList from "./BookList";
+import Cart from "./Cart";
+import { CartProvider } from "./CartContext";
 
-const App = () => {
+function App() {
   return (
-    <div className="App">
-      <BookList />
-    </div>
+    <CartProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<BookList />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   );
-};
+}
 
 export default App;
