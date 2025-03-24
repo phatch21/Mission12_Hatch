@@ -20,6 +20,7 @@ interface Book {
   publisher: string;
   isbn: string;
   classification: string;
+  category: string; // ✅ used for filtering now
   pageCount: number;
   price: number;
 }
@@ -68,12 +69,12 @@ const BookList = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
-  const categories = Array.from(new Set(books.map((b) => b.classification)));
+  const categories = Array.from(new Set(books.map((b) => b.category)));
 
   const filteredBooks =
     selectedCategory === "All"
       ? books
-      : books.filter((b) => b.classification === selectedCategory);
+      : books.filter((b) => b.category === selectedCategory);
 
   const indexOfLastBook = currentPage * booksPerPage;
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
@@ -89,7 +90,7 @@ const BookList = () => {
     <Container className="mt-4">
       <h2 className="text-center mb-4">Book List</h2>
 
-      {/* ✅ Bootstrap Toast */}
+      {/* ✅ Toast */}
       {showToast && (
         <div
           className="toast show align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-4"
@@ -111,7 +112,7 @@ const BookList = () => {
         </div>
       )}
 
-      {/* 🛒 Cart Summary + View Cart Button */}
+      {/* 🛒 Cart Summary + View Cart */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div>
           <h5 className="m-0">
@@ -127,7 +128,7 @@ const BookList = () => {
         </Button>
       </div>
 
-      {/* ✅ Enhanced Bootstrap Progress Bar */}
+      {/* ✅ Progress Bar */}
       <div className="my-2">
         <p className="mb-1 text-muted" style={{ fontSize: "0.9rem" }}>
           Cart Progress
@@ -193,6 +194,7 @@ const BookList = () => {
                 <th>Publisher</th>
                 <th>ISBN</th>
                 <th>Classification</th>
+                <th>Category</th>
                 <th>Pages</th>
                 <th>Price ($)</th>
                 <th>Add to Cart</th>
@@ -206,6 +208,7 @@ const BookList = () => {
                   <td>{book.publisher}</td>
                   <td>{book.isbn}</td>
                   <td>{book.classification}</td>
+                  <td>{book.category}</td>
                   <td>{book.pageCount}</td>
                   <td>{book.price.toFixed(2)}</td>
                   <td>
