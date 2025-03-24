@@ -11,6 +11,7 @@ import {
 } from "react-bootstrap";
 import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 interface Book {
   bookID: number;
@@ -34,6 +35,9 @@ const BookList = () => {
 
   const { cart, addToCart } = useCart();
   const navigate = useNavigate();
+
+  const [showToast, setShowToast] = useState(false);
+  const [lastAddedTitle, setLastAddedTitle] = useState<string | null>(null);
 
   useEffect(() => {
     axios
@@ -85,8 +89,30 @@ const BookList = () => {
     <Container className="mt-4">
       <h2 className="text-center mb-4">Book List</h2>
 
+      {/* ✅ Bootstrap Toast */}
+      {showToast && (
+        <div
+          className="toast show align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-4"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          style={{ zIndex: 9999 }}
+        >
+          <div className="d-flex">
+            <div className="toast-body">
+              ✅ <strong>{lastAddedTitle}</strong> added to cart!
+            </div>
+            <button
+              type="button"
+              className="btn-close btn-close-white me-2 m-auto"
+              onClick={() => setShowToast(false)}
+            ></button>
+          </div>
+        </div>
+      )}
+
       {/* 🛒 Cart Summary + View Cart Button */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
+      <div className="d-flex justify-content-between align-items-center mb-2">
         <div>
           <h5 className="m-0">
             Cart:{" "}
@@ -99,6 +125,31 @@ const BookList = () => {
         <Button variant="outline-primary" onClick={() => navigate("/cart")}>
           View Cart
         </Button>
+      </div>
+
+      {/* ✅ Enhanced Bootstrap Progress Bar */}
+      <div className="my-2">
+        <p className="mb-1 text-muted" style={{ fontSize: "0.9rem" }}>
+          Cart Progress
+        </p>
+        <div className="progress" style={{ height: "24px" }}>
+          <div
+            className={`progress-bar progress-bar-striped progress-bar-animated ${
+              totalItems / books.length >= 0.75
+                ? "bg-success"
+                : totalItems / books.length >= 0.5
+                  ? "bg-warning"
+                  : "bg-danger"
+            }`}
+            role="progressbar"
+            style={{ width: `${(totalItems / books.length) * 100}%` }}
+            aria-valuenow={totalItems}
+            aria-valuemin={0}
+            aria-valuemax={books.length}
+          >
+            {Math.min(100, Math.round((totalItems / books.length) * 100))}%
+          </div>
+        </div>
       </div>
 
       {loading && <p className="text-center">Loading books...</p>}
@@ -161,14 +212,17 @@ const BookList = () => {
                     <Button
                       size="sm"
                       variant="primary"
-                      onClick={() =>
+                      onClick={() => {
                         addToCart({
                           bookID: book.bookID,
                           title: book.title,
                           price: book.price,
                           quantity: 1,
-                        })
-                      }
+                        });
+                        setLastAddedTitle(book.title);
+                        setShowToast(true);
+                        setTimeout(() => setShowToast(false), 3000);
+                      }}
                     >
                       Add
                     </Button>
