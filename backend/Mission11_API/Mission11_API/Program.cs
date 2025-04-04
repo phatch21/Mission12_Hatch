@@ -13,8 +13,15 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// NEW: Build absolute path for SQLite database
+var dbPath = Path.Combine(AppContext.BaseDirectory, "Bookstore.db");
+var finalConnectionString = $"Data Source={dbPath}";
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(finalConnectionString));
+
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

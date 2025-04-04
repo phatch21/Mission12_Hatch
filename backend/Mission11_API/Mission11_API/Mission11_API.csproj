@@ -19,4 +19,17 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\assets\index-BNvmbXtT.js" />
+    <None Include="wwwroot\assets\index-DLNefBQz.css" />
+    <None Include="wwwroot\index.html" />
+    <None Include="wwwroot\vite.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Bookstore.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
