@@ -89,6 +89,11 @@ const BookList = () => {
   return (
     <Container className="mt-4">
       <h2 className="text-center mb-4">Book List</h2>
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="outline-dark" onClick={() => navigate("/adminbooks")}>
+          🛠️ Manage Books (Admin)
+        </Button>
+      </div>
 
       {/* ✅ Toast */}
       {showToast && (
