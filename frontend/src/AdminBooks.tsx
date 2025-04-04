@@ -52,7 +52,7 @@ const AdminBooks = () => {
   const handleSubmit = () => {
     if (editingId) {
       axios
-        .put(`http://localhost:5191/api/books/${editingId}`, {
+        .put(`/api/books/${editingId}`, {
           ...formBook,
           bookID: editingId,
         })
@@ -62,7 +62,7 @@ const AdminBooks = () => {
           fetchBooks();
         });
     } else {
-      axios.post("http://localhost:5191/api/books", formBook).then(() => {
+      axios.post("/api/books", formBook).then(() => {
         resetForm();
         fetchBooks();
       });
@@ -76,7 +76,7 @@ const AdminBooks = () => {
 
   const handleDelete = (id?: number) => {
     if (id) {
-      axios.delete(`http://localhost:5191/api/books/${id}`).then(fetchBooks);
+      axios.delete(`/api/books/${id}`).then(fetchBooks);
     }
   };
 
