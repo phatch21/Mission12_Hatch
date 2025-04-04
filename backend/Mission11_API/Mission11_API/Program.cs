@@ -27,16 +27,25 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// ✅ Apply CORS before UseAuthorization()
 app.UseCors("AllowAll");
 
+// Serve static files (like React build)
+app.UseDefaultFiles();   // 👈 Add this line
+app.UseStaticFiles();     // 👈 And this line
+
+app.UseRouting();         // 👈 Add routing between static files and controllers
 app.UseAuthorization();
 app.MapControllers();
 
+// Only show Swagger in development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+// If the route doesn't match an API route, fallback to React index.html
+app.MapFallbackToFile("/index.html");  // 👈 Add this important line!
+
 app.Run();
+
