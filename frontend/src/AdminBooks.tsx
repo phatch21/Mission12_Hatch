@@ -32,7 +32,7 @@ const AdminBooks = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const fetchBooks = () => {
-    axios.get("http://localhost:5191/api/books").then((res) => {
+    axios.get("/api/books").then((res) => {
       setBooks(res.data);
     });
   };

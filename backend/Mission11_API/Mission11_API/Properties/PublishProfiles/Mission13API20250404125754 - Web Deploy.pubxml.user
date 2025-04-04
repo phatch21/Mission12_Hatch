@@ -6,7 +6,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 <Project>
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <History>True|2025-04-04T19:24:21.3722519Z||;True|2025-04-04T13:21:17.3622507-06:00||;True|2025-04-04T13:11:28.2830463-06:00||;</History>
+    <History>True|2025-04-04T19:33:08.3616842Z||;True|2025-04-04T13:30:54.3482256-06:00||;True|2025-04-04T13:28:26.7372694-06:00||;True|2025-04-04T13:24:21.3722519-06:00||;True|2025-04-04T13:21:17.3622507-06:00||;True|2025-04-04T13:11:28.2830463-06:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=Bookstore.db</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
 </Project>

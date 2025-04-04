@@ -42,7 +42,7 @@ const BookList = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5191/api/books")
+      .get("/api/books")
       .then((response) => {
         setBooks(response.data);
         setLoading(false);
