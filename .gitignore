@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 final_zip_Hatch.zip
 node_modules/
+*.zip
 
 .vs/
 node_modules/
