@@ -3,6 +3,8 @@ import axios from "axios";
 import { Table, Container, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 interface Entertainer {
   entertainerID: number;
   entStageName: string;
@@ -17,7 +19,7 @@ const EntertainerList = () => {
 
   useEffect(() => {
     axios
-      .get("/api/entertainers")
+      .get(`${API_BASE}/api/entertainers`)
       .then((res) => {
         setEntertainers(res.data);
         setLoading(false);

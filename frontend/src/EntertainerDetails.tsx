@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 interface Entertainer {
   entertainerID: number;
   entStageName: string;
@@ -24,17 +26,17 @@ const EntertainerDetails = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/entertainers/${id}`)
+      .get(`${API_BASE}/api/entertainers/${id}`)
       .then((res) => setEntertainer(res.data))
-      .catch((err) => console.error("Failed to load entertainer:", err));
+      .catch(() => alert("Failed to load entertainer."));
   }, [id]);
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this entertainer?")) {
       axios
-        .delete(`/api/entertainers/${id}`)
+        .delete(`${API_BASE}/api/entertainers/${id}`)
         .then(() => navigate("/entertainers"))
-        .catch((err) => alert("Delete failed."));
+        .catch(() => alert("Delete failed."));
     }
   };
 
@@ -87,7 +89,10 @@ const EntertainerDetails = () => {
           ⬅️ Back to List
         </Button>
         <div>
-          <Button variant="warning" onClick={() => navigate(`/entertainer/edit/${id}`)}>
+          <Button
+            variant="warning"
+            onClick={() => navigate(`/entertainer/edit/${id}`)}
+          >
             ✏️ Edit
           </Button>{" "}
           <Button variant="danger" onClick={handleDelete}>

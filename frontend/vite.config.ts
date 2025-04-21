@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://localhost:7248", // Your backend
+        target:
+          "https://asdf-e4h9gqa5g0akf3d4.westus2-01.azurewebsites.net", // Your backend
         changeOrigin: true,
         secure: false,
       },

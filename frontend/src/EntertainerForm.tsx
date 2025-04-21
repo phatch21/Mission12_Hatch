@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Form, Button } from "react-bootstrap";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 const EntertainerForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,7 +25,9 @@ const EntertainerForm = () => {
 
   useEffect(() => {
     if (isEdit) {
-      axios.get(`/api/entertainers/${id}`).then((res) => setFormData(res.data));
+      axios
+        .get(`${API_BASE}/api/entertainers/${id}`)
+        .then((res) => setFormData(res.data));
     }
   }, [id, isEdit]);
 
@@ -36,15 +40,15 @@ const EntertainerForm = () => {
     e.preventDefault();
 
     const request = isEdit
-      ? axios.put(`/api/entertainers/${id}`, {
+      ? axios.put(`${API_BASE}/api/entertainers/${id}`, {
           entertainerID: Number(id),
           ...formData,
         })
-      : axios.post("/api/entertainers", formData);
+      : axios.post(`${API_BASE}/api/entertainers`, formData);
 
     request
       .then(() => navigate("/entertainers"))
-      .catch((err) => alert("Failed to save entertainer."));
+      .catch(() => alert("Failed to save entertainer."));
   };
 
   return (
@@ -54,7 +58,6 @@ const EntertainerForm = () => {
       </h2>
       <Form onSubmit={handleSubmit}>
         {Object.entries(formData).map(([key, value]) => {
-          // Don't show ID field at all when adding
           if (!isEdit && key.toLowerCase().includes("id")) return null;
 
           return (
@@ -65,8 +68,8 @@ const EntertainerForm = () => {
                 name={key}
                 value={value}
                 onChange={handleChange}
-                readOnly={key.toLowerCase().includes("id")} // readonly for IDs
-                disabled={key.toLowerCase().includes("id")} // visually disables too
+                readOnly={key.toLowerCase().includes("id")}
+                disabled={key.toLowerCase().includes("id")}
               />
             </Form.Group>
           );
