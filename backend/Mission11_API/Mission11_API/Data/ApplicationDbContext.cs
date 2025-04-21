@@ -7,6 +7,6 @@ namespace Mission11_API.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Entertainer> Entertainers { get; set; }
     }
 }

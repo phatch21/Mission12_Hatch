@@ -1,20 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import BookList from "./BookList";
-import Cart from "./Cart";
-import { CartProvider } from "./CartContext";
-import AdminBooks from "./AdminBooks";
+import EntertainerList from "./EntertainerList";
+import EntertainerDetails from "./EntertainerDetails";
+import EntertainerForm from "./EntertainerForm";
+import AppNavbar from "./NavBar";
+import Home from "./Home"; 
 
 function App() {
   return (
-    <CartProvider>
       <Router>
+        <AppNavbar /> {/* ⬅️ Add this line */}
         <Routes>
-          <Route path="/" element={<BookList />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/adminbooks" element={<AdminBooks />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/entertainers" element={<EntertainerList />} />
+          <Route path="/entertainer/:id" element={<EntertainerDetails />} />
+          <Route path="/entertainer/add" element={<EntertainerForm />} />
+          <Route path="/entertainer/edit/:id" element={<EntertainerForm />} />
         </Routes>
       </Router>
-    </CartProvider>
   );
 }
 

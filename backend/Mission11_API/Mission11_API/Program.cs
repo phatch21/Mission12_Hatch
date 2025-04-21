@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // NEW: Build absolute path for SQLite database
-var dbPath = Path.Combine(AppContext.BaseDirectory, "Bookstore.db");
+var dbPath = Path.Combine(AppContext.BaseDirectory, "EntertainmentAgencyExample.sqlite");
 var finalConnectionString = $"Data Source={dbPath}";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
